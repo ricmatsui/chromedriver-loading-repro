@@ -1,0 +1,16 @@
+version: '2'
+services:
+    selenium:
+        image: selenium/standalone-chrome-debug:3.11.0-antimony
+        volumes:
+            - /dev/shm:/dev/shm
+    repro:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - .:/usr/src/app
+        links:
+            - selenium
+
+# vim: ts=4 sw=4 sts=4 sr et

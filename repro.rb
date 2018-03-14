@@ -32,6 +32,21 @@ when 'remote'
         desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(
             pageLoadStrategy: page_load_strategy
         )
+when 'remote_container'
+    begin
+        socket = TCPSocket.open 'selenium', 4444
+        socket.close
+    rescue StandardError => e
+        puts 'Waiting for selenium to start'
+        sleep 0.1
+        retry
+    end
+
+    driver = Selenium::WebDriver.for :remote,
+        url: 'http://selenium:4444/wd/hub',
+        desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(
+            pageLoadStrategy: page_load_strategy
+        )
 when 'firefox'
     driver = Selenium::WebDriver.for :firefox,
         desired_capabilities: Selenium::WebDriver::Remote::Capabilities.firefox(
